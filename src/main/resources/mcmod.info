@@ -1,0 +1,12 @@
+[{
+  "modid": "hue",
+  "name": "Philips Hue",
+  "description": "Make Philips Hue lights respond to Minecraft events.",
+  "version": "1.0.0",
+  "mcversion": "1.10.2",
+  "logoFile": "assets/examplemod/textures/logo.png",
+  "url": "minecraftforge.net/",
+  "updateJSON": "minecraftforge.net/versions.json",
+  "authorList": ["Remco Haszing", "Jasper Bouwman"],
+  "credits": "IDK!!1!!!11!!!!!!11!!!1!!!111oneoneeleventyone",
+}]
