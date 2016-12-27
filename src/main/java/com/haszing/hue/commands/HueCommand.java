@@ -38,7 +38,8 @@ public class HueCommand extends CommandBase {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
         for (HueAction action : this.actions) {
             if (args[0].equals(action.getName())) {
-                action.run(player, args);
+                action.setPlayer(player);
+                action.run(args);
                 break;
             }
         }

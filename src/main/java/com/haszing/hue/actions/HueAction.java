@@ -7,15 +7,25 @@ import net.minecraft.util.text.TextComponentString;
  * Mark a class as a sub command of the hue command.
  */
 public abstract class HueAction {
+    protected EntityPlayer player;
+
     /**
      * The name of the command.
      */
     public abstract String getName();
 
-    public abstract void run(EntityPlayer player, String[] args);
+    public abstract void run(String[] args);
 
-    void sendMessage(EntityPlayer player, String message) {
+    public EntityPlayer getPlayer() {
+        return this.player;
+    }
+
+    public void setPlayer(EntityPlayer player) {
+        this.player = player;
+    }
+
+    void sendMessage(String message) {
         TextComponentString msg = new TextComponentString(message);
-        player.addChatComponentMessage(msg, false);
+        this.player.addChatComponentMessage(msg, false);
     }
 }
