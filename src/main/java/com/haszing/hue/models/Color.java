@@ -25,4 +25,14 @@ public class Color {
     public int getBlue() {
         return this.blue;
     }
+
+    public boolean equals(Object other) {
+        if (!(other instanceof Color)) {
+            return false;
+        }
+        Color color = (Color) other;
+        return this.red == color.red &&
+                this.green == color.green &&
+                this.blue == color.blue;
+    }
 }

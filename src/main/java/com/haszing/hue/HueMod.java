@@ -44,6 +44,7 @@ public class HueMod {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        HueManager.getInstance().start();
         this.listener = new EventListener();
         MinecraftForge.EVENT_BUS.register(this.listener);
         FMLCommonHandler.instance().bus().register(this.listener);
@@ -57,6 +58,8 @@ public class HueMod {
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         MinecraftServer server = event.getServer();
+        HueManager hueManager = HueManager.getInstance();
+        hueManager.setMinecraftServer(server);
         this.listener.setWorld(server.getEntityWorld());
         this.commandManager = (ServerCommandManager) server.getCommandManager();
         this.initCommands();
