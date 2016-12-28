@@ -13,6 +13,8 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
+import java.io.UnsupportedEncodingException;
+
 @Mod(modid = HueMod.MOD_ID, name = HueMod.NAME, version = HueMod.VERSION)
 public class HueMod {
     /**
@@ -43,7 +45,7 @@ public class HueMod {
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) throws UnsupportedEncodingException {
         HueManager.getInstance().start();
         this.listener = new EventListener();
         MinecraftForge.EVENT_BUS.register(this.listener);

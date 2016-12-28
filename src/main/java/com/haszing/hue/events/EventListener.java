@@ -1,5 +1,8 @@
 package com.haszing.hue.events;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.haszing.hue.HueManager;
 import com.haszing.hue.models.Color;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,19 +16,24 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EventListener {
     private World world;
-    private Map<Class<? extends Biome>, Color> biomeMap;
+    private Map<String, String> biomeMap;
     private HueManager hueManager = new HueManager();
 
-    public EventListener() {
-        this.biomeMap = new HashMap<Class<? extends Biome>, Color>();
-        this.biomeMap.put(BiomeDesert.class, new Color(200, 180, 10));
-        this.biomeMap.put(BiomeOcean.class, new Color(10, 50, 255));
-        this.biomeMap.put(BiomePlains.class, new Color(60, 255, 5));
+    public EventListener() throws UnsupportedEncodingException {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<HashMap<String, String>>(){}.getType();
+        InputStream stream = classLoader.getResourceAsStream("biomes.json");
+        this.biomeMap = gson.fromJson(new JsonReader(new InputStreamReader(stream, "UTF-8")), listType);
     }
 
     public void setWorld(World world) {
@@ -54,7 +62,7 @@ public class EventListener {
         BlockPos pos = player.getPosition();
         Chunk chunk = this.world.getChunkFromBlockCoords(pos);
         Biome biome = chunk.getBiome(pos, this.world.getBiomeProvider());
-        Color color = this.biomeMap.get(biome.getClass());
+        String color = this.biomeMap.get(biome.getRegistryName().getResourcePath());
         if (color != null) {
             this.hueManager.adjustColor(color);
         }

@@ -6,18 +6,15 @@ import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHSDKListener;
 import com.philips.lighting.hue.sdk.utilities.PHUtilities;
-import com.philips.lighting.model.PHBridge;
-import com.philips.lighting.model.PHHueParsingError;
-import com.philips.lighting.model.PHLight;
-import com.philips.lighting.model.PHLightState;
+import com.philips.lighting.model.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.client.config.GuiConfigEntries;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HueManager implements PHSDKListener {
+    private static String HUE_GROUP_NAME = "minecraft";
     private PHHueSDK phHueSDK = PHHueSDK.getInstance();
     private Color color;
     private List<PHAccessPoint> accessPoints = new ArrayList<PHAccessPoint>();
@@ -37,6 +34,17 @@ public class HueManager implements PHSDKListener {
 
     public void setMinecraftServer(MinecraftServer minecraftServer) {
         this.minecraftServer = minecraftServer;
+    }
+
+    public void adjustColor(String rgb) {
+        if (rgb.startsWith("#")) {
+            rgb = rgb.substring(1);
+        }
+        int colors = Integer.parseInt(rgb, 16);
+        int red = (colors & 0xff0000) / 0x10000;
+        int green = (colors & 0x00ff00) / 0x100;
+        int blue = colors & 0x0000ff;
+        this.adjustColor(new Color(red, green, blue));
     }
 
     public void adjustColor(Color color) {
@@ -85,8 +93,8 @@ public class HueManager implements PHSDKListener {
     }
 
     @Override
-    public void onBridgeConnected(PHBridge phBridge, String s) {
-
+    public void onBridgeConnected(PHBridge bridge, String s) {
+        this.sendMessage("Connected to bridge " + bridge);
     }
 
     @Override
