@@ -1,5 +1,8 @@
+/.classpath
 /.gradle/
 /.idea/
+/.project
+/bin/
 /build/
 /gradle/
 /libs/
