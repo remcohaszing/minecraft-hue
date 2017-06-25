@@ -5,7 +5,6 @@
 /bin/
 /build/
 /gradle/
-/libs/
 /out/
 /run/
 *.iml
