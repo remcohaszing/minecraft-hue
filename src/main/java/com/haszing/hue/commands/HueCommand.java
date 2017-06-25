@@ -7,6 +7,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +37,23 @@ public class HueCommand extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+
+        if (args.length == 0) {
+            sendErrorMessage(player);
+            return;
+        }
         for (HueAction action : this.actions) {
             if (args[0].equals(action.getName())) {
                 action.setPlayer(player);
                 action.run(args);
-                break;
+                return;
             }
         }
+        sendErrorMessage(player);
+    }
+
+    private void sendErrorMessage(EntityPlayerMP player) {
+        TextComponentString msg = new TextComponentString("this is not a command");
+        player.addChatComponentMessage(msg, false);
     }
 }
